@@ -68,6 +68,7 @@ DIR
     FnShowMenuCombinatorics
     FnShowMenuEquations
     FnShowMenuLinearAlgebra
+    FnToggleDefault
     FnToggleDRG
     FnToggleEA
     FnToggleHDOB
@@ -401,12 +402,23 @@ DIR
 
     @ Is "Exact" mode?
     IF -105 FC? THEN
-      @ Set "Exact" mode.
+      @ Set "Approximate" mode.
       -105 SF
     ELSE
-      @ Set "Approximate" mode.
+      @ Set "Exact" mode.
       -105 CF
     END
+  »
+
+  FnToggleDefault «
+    @ #NOTE Function: FnToggleDefault
+    @ This function restores the calculator to its default modes.
+
+    RAD       @ Set "Radians" mode.
+    RECT      @ Set "Rectangular" mode.
+    HEX       @ Set "HEX" mode.
+    -103 CF   @ Set "Real" mode.
+    -105 CF   @ Set "Exact" mode.
   »
 
   ChooseSystemTools «
@@ -488,6 +500,7 @@ DIR
       { "†HDOB" « FnToggleHDOB » }
       { "†RC" « FnToggleRC » }
       { "†=~" « FnToggleEA » }
+      { "Reset" « FnToggleDefault » }
     }
 
     @ Define and display the Custom Menu.
@@ -523,6 +536,7 @@ DIR
       { "†HDOB" « FnToggleHDOB » }
       { "†RC" « FnToggleRC » }
       { "†=~" « FnToggleEA » }
+      { "Reset" « FnToggleDefault » }
     }
 
     @ Define and display the Custom Menu.
@@ -551,6 +565,7 @@ DIR
       { "†HDOB" « FnToggleHDOB » }
       { "†RC" « FnToggleRC » }
       { "†=~" « FnToggleEA » }
+      { "Reset" « FnToggleDefault » }
     }
 
     @ Define and display the Custom Menu.
