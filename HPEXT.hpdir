@@ -601,6 +601,8 @@ DIR
 
     @ Clear the stack.
     CLEAR
+
+    FnShowMenuEquations
   ª
 
   FnFactoryReset ´
@@ -614,9 +616,6 @@ DIR
     FONT8 çFONT
 
     FnFactoryResetBase
-
-    @ Show the VAR menu.
-    2 TMENU
   ª
 
   FnFactoryResetRpn ´
@@ -633,8 +632,6 @@ DIR
     FONT6 çFONT
 
     FnFactoryResetBase
-
-    FnShowMenuEquations
   ª
 
   RESET ´
