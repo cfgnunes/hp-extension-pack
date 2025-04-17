@@ -1,0 +1,19 @@
+@ This program remove temporary files and the library.
+
+@ %NAME%=RmLib
+
+«
+  @ Set RPN mode.
+  -95 CF
+
+  CLEAR
+
+  HOME
+
+  @ Purge 'MyLib' directory.
+  'MyLib' PGDIR
+
+  @ Remove the library from port 0 (IRAM).
+  :0:1023
+  PURGE
+»
