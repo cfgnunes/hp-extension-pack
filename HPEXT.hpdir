@@ -518,6 +518,9 @@ DIR
     FONT8 çFONT
 
     FnFactoryResetBase
+
+    @ Show the VAR menu.
+    2 TMENU
   ª
 
   FnFactoryResetRpn ´
