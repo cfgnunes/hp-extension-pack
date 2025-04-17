@@ -455,7 +455,7 @@ DIR
 
     ""
     {
-      { "1.Equatios menu" 1. }
+      { "1.Equations menu" 1. }
       { "2.Linear Algebra menu" 2. }
       { "3.Combinatorics menu" 3. }
     }
