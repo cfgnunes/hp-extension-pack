@@ -59,11 +59,16 @@ DIR
     AppIRR
     AppNPV
     ChooseSystemTools
-    ExtensionProgram
     FnCustomMenu
+    FnExtProgram
     FnFactoryReset
     FnFactoryResetRpn
     FnPurgeHomeFiles
+    FnToggleDRG
+    FnToggleEA
+    FnToggleHDOB
+    FnToggleRC
+    FnToggleRCS
     MsgBoxExample
   }
 
@@ -73,14 +78,14 @@ DIR
   @ functions, as if they were part of the system. The calculator does not
   @ provide every possible function in every area, but they let you customize
   @ the built in menu in order to add your functions as if they were built in.
-  $EXTPRG 'ExtensionProgram'
+  $EXTPRG 'FnExtProgram'
 
   @ ---------------------------------------------------------------------------
   @ #NOTE Files of the library
   @ ---------------------------------------------------------------------------
 
-  ExtensionProgram «
-    @ #NOTE Function: ExtensionProgram
+  FnExtProgram «
+    @ #NOTE Function: FnExtProgram
     @ This is the Extension Program of the library.
 
     @ The Extension Program is executed automatically
@@ -319,18 +324,18 @@ DIR
       @ Screen 1 - Equations.
       { "EDIT1" EDITB }
       { "VIEW" « DUP SCROLL » }
+      PLOT
       FACTOR
       SIMPLIFY
       PARTFRAC
-      Q
 
       @ Screen 2 - Equations (solve).
       { "EDIT2" EDITB }
-      { "VIEW" « DUP SCROLL » }
       ISOL
       SOLVEVX
       FROOTS
       RREF
+      Q
 
       @ Screen 3 - Linear algebra.
       { "EDIT3" EDITB }
@@ -349,98 +354,100 @@ DIR
       { }
 
       @ Screen 5 - Configuration modes.
-      {
-        @ Toggle between:
-        @ Degree -> Radians -> Grads modes.
-        "†DRG"
-        «
-          @ Is "Radians" mode?
-          IF -17 FS? THEN
-            GRAD
-          ELSE
-            @ Is "Grads" mode?
-            IF -18 FS? THEN
-              DEG
-            ELSE
-              RAD
-            END
-          END
-        »
-      }
-      {
-        @ Toggle between:
-        @ Rectangular -> Polar/Cylindrical -> Polar/Spherical modes.
-        "†RCS"
-        «
-          @ Is "Rectangular" mode?
-          IF -16 FC? THEN
-            CYLIN
-          ELSE
-            IF -15 FC? THEN
-              SPHERE
-            ELSE
-              RECT
-            END
-          END
-        »
-      }
-      {
-        @ Toggle between:
-        @ HEX -> DEC -> OCT -> BIN modes.
-        "†HDOB"
-        «
-          @ Is "HEX" mode?
-          IF -11 FS? -12 FS? AND THEN
-            DEC
-          ELSE
-            @ Is "DEC" mode?
-            IF -11 FC? -12 FC? AND THEN
-              OCT
-            ELSE
-              @ Is "OCT" mode?
-              IF -11 FS? -12 FC? AND THEN
-                BIN
-              ELSE
-                HEX
-              END
-            END
-          END
-        »
-      }
-      {
-        @ Toggle between:
-        @ Real -> Complex modes.
-        "†RC"
-        «
-          @ Is "Real" mode?
-          IF -103 FC? THEN
-            @ Set "Complex" mode.
-            -103 SF
-          ELSE
-            @ Set "Real" mode.
-            -103 CF
-          END
-        »
-      }
-      {
-        @ Toggle between:
-        @ Exact -> Approximate modes.
-        "†=~"
-        «
-          @ Is "Exact" mode?
-          IF -105 FC? THEN
-            @ Set "Exact" mode.
-            -105 SF
-          ELSE
-            @ Set "Approximate" mode.
-            -105 CF
-          END
-        »
-      }
+      { "†DRG" « FnToggleDRG » }
+      { "†RCS" « FnToggleRCS » }
+      { "†HDOB" « FnToggleHDOB » }
+      { "†RC" « FnToggleRC » }
+      { "†=~" « FnToggleEA » }
     }
 
     @ Define and display the Custom Menu.
     MENU
+  »
+
+  FnToggleDRG «
+    @ #NOTE Function: FnToggleDRG
+    @ This function toggles between Degree, Radian, and Grads modes.
+
+    @ Is "Radians" mode?
+    IF -17 FS? THEN
+      GRAD
+    ELSE
+      @ Is "Grads" mode?
+      IF -18 FS? THEN
+        DEG
+      ELSE
+        RAD
+      END
+    END
+  »
+
+  FnToggleRCS «
+    @ #NOTE Function: FnToggleRCS
+    @ This function toggles between Rectangular, Polar/Cylindrical, and
+    @ Polar/Spherical modes.
+
+    @ Is "Rectangular" mode?
+    IF -16 FC? THEN
+      CYLIN
+    ELSE
+      IF -15 FC? THEN
+        SPHERE
+      ELSE
+        RECT
+      END
+    END
+  »
+
+  FnToggleHDOB «
+    @ #NOTE Function: FnToggleHDOB
+    @ This function toggles between Hexadecimal, Decimal, Octal, and Binary
+    @ modes.
+
+    @ Is "HEX" mode?
+    IF -11 FS? -12 FS? AND THEN
+      DEC
+    ELSE
+      @ Is "DEC" mode?
+      IF -11 FC? -12 FC? AND THEN
+        OCT
+      ELSE
+        @ Is "OCT" mode?
+        IF -11 FS? -12 FC? AND THEN
+          BIN
+        ELSE
+          HEX
+        END
+      END
+    END
+  »
+
+  FnToggleRC «
+    @ #NOTE Function: FnToggleRC
+    @ This function toggles between Real and Complex modes.
+
+    @ Is "Real" mode?
+    IF -103 FC? THEN
+      @ Set "Complex" mode.
+      -103 SF
+    ELSE
+      @ Set "Real" mode.
+      -103 CF
+    END
+  »
+
+  FnToggleEA «
+    @ #NOTE Function: FnToggleEA
+    @ This function toggles between Exact and Approximate modes.
+
+    @ Is "Exact" mode?
+    IF -105 FC? THEN
+      @ Set "Exact" mode.
+      -105 SF
+    ELSE
+      @ Set "Approximate" mode.
+      -105 CF
+    END
   »
 
   ChooseSystemTools «
@@ -488,6 +495,9 @@ DIR
   FnFactoryReset «
     @ #NOTE Function: FnFactoryReset
 
+    @ Clear the user keys.
+    { } STOKEYS
+
     @ Restore default flags.
     {# 204010FF0h # 0h # 8000000042000000h # 0h} STOF
 
@@ -505,6 +515,9 @@ DIR
 
   FnFactoryResetRpn «
     @ #NOTE Function: FnFactoryResetRpn
+
+    @ Clear the user keys.
+    { } STOKEYS
 
     @ Restore my custom flags.
     @-56 SF Disable Error Beep.
