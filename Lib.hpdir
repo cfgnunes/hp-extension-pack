@@ -154,23 +154,23 @@ DIR
       1
       CHOOSE
 
-      IF THEN
-        DUP TYPE
-        IF 0 == THEN
-          @ If option 1 is selected 1.Time Value of Money", clear temp data on
-          @ the stack and continue.
-          DROP
-        ELSE
-          @ Otherwise, evaluate the selected program.
-          3 ROLLD 2 DROPN
-          EVAL
-          KILL
-        END
+      @ Exit if the user presses "Cancel".
+      NOT IF THEN
+        2 DROPN KILL
+      END
+
+      DUP
+      TYPE 0. == IF THEN
+        @ If is selected "1.Time Value of Money",
+        @ clear temp data on the stack and continue.
+        DROP
       ELSE
-        @ If user cancels the CHOOSE box, just clean up.
-        2 DROPN
+        @ Otherwise, evaluate the selected program.
+        3 ROLLD 2 DROPN
+        EVAL
         KILL
       END
+
     END
   ª
 
@@ -206,9 +206,7 @@ DIR
     @ INFORM Section (End) ----------------------------------------------------
 
     @ Exit if the user presses "Cancel".
-    NOT IF THEN
-      KILL
-    END
+    NOT IF THEN KILL END
 
     @ Store inputs in variables to allow re-use and editing by the user.
     OBJç DROP
@@ -263,9 +261,7 @@ DIR
     @ INFORM Section (End) ----------------------------------------------------
 
     @ Exit if the user presses "Cancel".
-    NOT IF THEN
-      KILL
-    END
+    NOT IF THEN KILL END
 
     @ Store inputs in variables to allow re-use and editing by the user.
     OBJç DROP
@@ -372,19 +368,13 @@ DIR
     1
     CHOOSE
 
-    NOT IF THEN
-      KILL
-    END
+    @ Exit if the user presses "Cancel".
+    NOT IF THEN KILL END
 
-    IF DUP 1. == THEN
-      DROP
-      FnShowMenuEquations
-    ELSE
-      IF 2. == THEN
-        FnShowMenuLinearAlgebra
-      ELSE
+    CASE
+      DUP 1. == THEN DROP FnShowMenuEquations END
+      2. == THEN FnShowMenuLinearAlgebra END
         FnShowMenuCombinatorics
-      END
     END
   ª
 
