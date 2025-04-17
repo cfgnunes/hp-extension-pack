@@ -1,7 +1,7 @@
 @ This program installs helper functions in port 2 (FLASH).
 @ It is used to build the library from the source code and tests.
 
-@ %NAME%=HELPER
+@ %NAME%=Helper
 
 «
 
