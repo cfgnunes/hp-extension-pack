@@ -62,6 +62,7 @@ DIR
     FnCustomMenu
     FnExtProgram
     FnFactoryReset
+    FnFactoryResetBase
     FnFactoryResetRpn
     FnPurgeHomeFiles
     FnToggleDRG
@@ -492,17 +493,11 @@ DIR
     PURGE
   ª
 
-  FnFactoryReset ´
-    @ #NOTE Function: FnFactoryReset
+  FnFactoryResetBase ´
+    @ #NOTE Function: FnFactoryResetBase
 
     @ Clear the user keys.
     { } STOKEYS
-
-    @ Restore default flags.
-    {# 204010FF0h # 0h # 8000000042000000h # 0h} STOF
-
-    @ Set the FONT8 (default).
-    FONT8 çFONT
 
     FnPurgeHomeFiles
 
@@ -513,11 +508,20 @@ DIR
     CLEAR
   ª
 
+  FnFactoryReset ´
+    @ #NOTE Function: FnFactoryReset
+
+    @ Restore default flags.
+    {# 204010FF0h # 0h # 8000000042000000h # 0h} STOF
+
+    @ Set the FONT8 (default).
+    FONT8 çFONT
+
+    FnFactoryResetBase
+  ª
+
   FnFactoryResetRpn ´
     @ #NOTE Function: FnFactoryResetRpn
-
-    @ Clear the user keys.
-    { } STOKEYS
 
     @ Restore my custom flags.
     @-56 SF Disable Error Beep.
@@ -527,13 +531,7 @@ DIR
     @ Set the FONT6.
     FONT6 çFONT
 
-    FnPurgeHomeFiles
-
-    @ Restore CAS variables from the "CASDIR".
-    CASCFG
-
-    @ Clear the stack.
-    CLEAR
+    FnFactoryResetBase
 
     FnCustomMenu
   ª
