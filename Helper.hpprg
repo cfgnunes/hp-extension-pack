@@ -9,6 +9,11 @@
     @ #NOTE Function: LibMk
     @ It is used to build the library from the source code.
 
+    -95 CF @ Set RPN mode.
+
+    @ Attach the development library.
+    256 ATTACH
+
     @ Change the directory to the library folder.
     HOME
     MyLib
