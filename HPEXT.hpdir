@@ -1,5 +1,5 @@
 @ =============================================================================
-@ Library Name : HP Extension Pack
+@ Library Name : Extension Pack HP
 @ Author       : Cristiano Fraga G. Nunes
 @ Version      : 0.1
 @ Date         : 16/04/2025
@@ -44,7 +44,7 @@ DIR
   @ the library. This string must be less than 256 characters long. The first
   @ five characters will be used for the name that is shown in the library
   @ menu.
-  $TITLE "HPEXT:HP Extension Pack v0.1"
+  $TITLE "Extension Pack HP v0.1"
 
   @ The $VISIBLE variable contains a list of all the variables in the current
   @ directory that you want to have visible in the library menu.
