@@ -65,15 +65,10 @@ DIR
     FnFactoryResetBase
     FnFactoryResetRpn
     FnPurgeHomeFiles
+    FnResetModes
     FnShowMenuCombinatorics
     FnShowMenuEquations
     FnShowMenuLinearAlgebra
-    FnToggleDefault
-    FnToggleDRG
-    FnToggleEA
-    FnToggleHDOB
-    FnToggleRC
-    FnToggleRCS
     MsgBoxExample
   }
 
@@ -325,94 +320,9 @@ DIR
     101.2 KEYEVAL
   ª
 
-  FnToggleDRG ´
-    @ #NOTE Function: FnToggleDRG
-    @ This function toggles between Degree, Radian, and Grads modes.
-
-    @ Is "Radians" mode?
-    IF -17 FS? THEN
-      GRAD
-    ELSE
-      @ Is "Grads" mode?
-      IF -18 FS? THEN
-        DEG
-      ELSE
-        RAD
-      END
-    END
-  ª
-
-  FnToggleRCS ´
-    @ #NOTE Function: FnToggleRCS
-    @ This function toggles between Rectangular, Polar/Cylindrical, and
-    @ Polar/Spherical modes.
-
-    @ Is "Rectangular" mode?
-    IF -16 FC? THEN
-      CYLIN
-    ELSE
-      IF -15 FC? THEN
-        SPHERE
-      ELSE
-        RECT
-      END
-    END
-  ª
-
-  FnToggleHDOB ´
-    @ #NOTE Function: FnToggleHDOB
-    @ This function toggles between Hexadecimal, Decimal, Octal, and Binary
-    @ modes.
-
-    @ Is "HEX" mode?
-    IF -11 FS? -12 FS? AND THEN
-      DEC
-    ELSE
-      @ Is "DEC" mode?
-      IF -11 FC? -12 FC? AND THEN
-        OCT
-      ELSE
-        @ Is "OCT" mode?
-        IF -11 FS? -12 FC? AND THEN
-          BIN
-        ELSE
-          HEX
-        END
-      END
-    END
-  ª
-
-  FnToggleRC ´
-    @ #NOTE Function: FnToggleRC
-    @ This function toggles between Real and Complex modes.
-
-    @ Is "Real" mode?
-    IF -103 FC? THEN
-      @ Set "Complex" mode.
-      -103 SF
-    ELSE
-      @ Set "Real" mode.
-      -103 CF
-    END
-  ª
-
-  FnToggleEA ´
-    @ #NOTE Function: FnToggleEA
-    @ This function toggles between Exact and Approximate modes.
-
-    @ Is "Exact" mode?
-    IF -105 FC? THEN
-      @ Set "Approximate" mode.
-      -105 SF
-    ELSE
-      @ Set "Exact" mode.
-      -105 CF
-    END
-  ª
-
-  FnToggleDefault ´
-    @ #NOTE Function: FnToggleDefault
-    @ This function restores the calculator to its default modes.
+  FnResetModes ´
+    @ #NOTE Function: FnResetModes
+    @ This function resets the calculator modes to default.
 
     RAD       @ Set "Radians" mode.
     RECT      @ Set "Rectangular" mode.
@@ -492,15 +402,7 @@ DIR
       COMB
       PERM
       !
-      { }
-
-      @ Screen - Configuration modes.
-      { "ÜDRG" ´ FnToggleDRG ª }
-      { "ÜRCS" ´ FnToggleRCS ª }
-      { "ÜHDOB" ´ FnToggleHDOB ª }
-      { "ÜRC" ´ FnToggleRC ª }
-      { "Ü=~" ´ FnToggleEA ª }
-      { "Reset" ´ FnToggleDefault ª }
+      { "RMODE" ´ FnResetModes ª }
     }
 
     @ Define and display the Custom Menu.
@@ -523,20 +425,12 @@ DIR
       PARTFRAC
 
       @ Screen - Equations (solve).
-      { "EDIT" EDITB }
       ISOL
       SOLVEVX
       FROOTS
       RREF
       çQ
-
-      @ Screen - Configuration modes.
-      { "ÜDRG" ´ FnToggleDRG ª }
-      { "ÜRCS" ´ FnToggleRCS ª }
-      { "ÜHDOB" ´ FnToggleHDOB ª }
-      { "ÜRC" ´ FnToggleRC ª }
-      { "Ü=~" ´ FnToggleEA ª }
-      { "Reset" ´ FnToggleDefault ª }
+      { "RMODE" ´ FnResetModes ª }
     }
 
     @ Define and display the Custom Menu.
@@ -545,7 +439,6 @@ DIR
 
   FnShowMenuLinearAlgebra ´
     @ #NOTE Function: FnShowMenuLinearAlgebra
-
     @ This function creates a custom menu with various mathematical functions.
 
     @ Put in the stack the "Custom Menu",
@@ -560,12 +453,7 @@ DIR
       EGV
 
       @ Screen - Configuration modes.
-      { "ÜDRG" ´ FnToggleDRG ª }
-      { "ÜRCS" ´ FnToggleRCS ª }
-      { "ÜHDOB" ´ FnToggleHDOB ª }
-      { "ÜRC" ´ FnToggleRC ª }
-      { "Ü=~" ´ FnToggleEA ª }
-      { "Reset" ´ FnToggleDefault ª }
+      { "RMODE" ´ FnResetModes ª }
     }
 
     @ Define and display the Custom Menu.
