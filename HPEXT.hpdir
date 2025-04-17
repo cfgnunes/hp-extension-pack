@@ -58,13 +58,16 @@ DIR
   $HIDDEN {
     AppIRR
     AppNPV
+    ChooseShortcutMenus
     ChooseSystemTools
-    FnCustomMenu
     FnExtProgram
     FnFactoryReset
     FnFactoryResetBase
     FnFactoryResetRpn
     FnPurgeHomeFiles
+    FnShowMenuCombinatorics
+    FnShowMenuEquations
+    FnShowMenuLinearAlgebra
     FnToggleDRG
     FnToggleEA
     FnToggleHDOB
@@ -123,9 +126,15 @@ DIR
     @ Add a new menu entry if the "APPS menu" is active (msg = 0).
     IF DUP 0 R~SB == THEN
       SWAP
+
+	    DUP { "" } + SIZE
+      "Shortcut menus" + ´ ChooseShortcutMenus ª
+      2 çLIST 1 çLIST +
+
 	    DUP { "" } + SIZE
       "System tools" + ´ ChooseSystemTools ª
       2 çLIST 1 çLIST +
+
       SWAP
     END
 
@@ -315,57 +324,6 @@ DIR
     101.2 KEYEVAL
   ª
 
-  FnCustomMenu ´
-    @ #NOTE Function: FnCustomMenu
-    @ This function creates a custom menu with various mathematical functions.
-
-    @ Put in the stack the "Custom Menu",
-    @ to be displayed and stored as 'CST' file in Home.
-    {
-      @ Screen 1 - Equations.
-      { "EDIT1" EDITB }
-      { "VIEW" ´ DUP SCROLL ª }
-      PLOT
-      FACTOR
-      SIMPLIFY
-      PARTFRAC
-
-      @ Screen 2 - Equations (solve).
-      { "EDIT2" EDITB }
-      ISOL
-      SOLVEVX
-      FROOTS
-      RREF
-      çQ
-
-      @ Screen 3 - Linear algebra.
-      { "EDIT3" EDITB }
-      { "VIEW" ´ DUP SCROLL ª }
-      DET
-      TRAN
-      INV
-      EGV
-
-      @ Screen 4 - Combinatorics.
-      { "EDIT4" EDITB }
-      { "VIEW" ´ DUP SCROLL ª }
-      COMB
-      PERM
-      !
-      { }
-
-      @ Screen 5 - Configuration modes.
-      { "ÜDRG" ´ FnToggleDRG ª }
-      { "ÜRCS" ´ FnToggleRCS ª }
-      { "ÜHDOB" ´ FnToggleHDOB ª }
-      { "ÜRC" ´ FnToggleRC ª }
-      { "Ü=~" ´ FnToggleEA ª }
-    }
-
-    @ Define and display the Custom Menu.
-    MENU
-  ª
-
   FnToggleDRG ´
     @ #NOTE Function: FnToggleDRG
     @ This function toggles between Degree, Radian, and Grads modes.
@@ -480,6 +438,125 @@ DIR
     END
   ª
 
+  ChooseShortcutMenus ´
+    @ #NOTE Function: ChooseShortcutMenus
+
+    ""
+    {
+      { "1.Equatios menu" 1. }
+      { "2.Linear Algebra menu" 2. }
+      { "3.Combinatorics menu" 3. }
+    }
+    1
+    CHOOSE
+
+    NOT IF THEN
+      KILL
+    END
+
+    IF DUP 1. == THEN
+      DROP
+      FnShowMenuEquations
+    ELSE
+      IF 2. == THEN
+        FnShowMenuLinearAlgebra
+      ELSE
+        FnShowMenuCombinatorics
+      END
+    END
+  ª
+
+  FnShowMenuCombinatorics ´
+    @ #NOTE Function: FnShowMenuCombinatorics
+
+    @ This function creates a custom menu with various mathematical functions.
+
+    @ Put in the stack the "Custom Menu",
+    @ to be displayed and stored as 'CST' file in Home.
+    {
+      @ Screen 4 - Combinatorics.
+      { "EDIT4" EDITB }
+      { "VIEW" ´ DUP SCROLL ª }
+      COMB
+      PERM
+      !
+      { }
+
+      @ Screen 5 - Configuration modes.
+      { "ÜDRG" ´ FnToggleDRG ª }
+      { "ÜRCS" ´ FnToggleRCS ª }
+      { "ÜHDOB" ´ FnToggleHDOB ª }
+      { "ÜRC" ´ FnToggleRC ª }
+      { "Ü=~" ´ FnToggleEA ª }
+    }
+
+    @ Define and display the Custom Menu.
+    MENU
+  ª
+
+  FnShowMenuEquations ´
+    @ #NOTE Function: FnShowMenuEquations
+    @ This function creates a custom menu with various mathematical functions.
+
+    @ Put in the stack the "Custom Menu",
+    @ to be displayed and stored as 'CST' file in Home.
+    {
+      @ Screen 1 - Equations.
+      { "EDIT1" EDITB }
+      { "VIEW" ´ DUP SCROLL ª }
+      PLOT
+      FACTOR
+      SIMPLIFY
+      PARTFRAC
+
+      @ Screen 2 - Equations (solve).
+      { "EDIT2" EDITB }
+      ISOL
+      SOLVEVX
+      FROOTS
+      RREF
+      çQ
+
+      @ Screen 5 - Configuration modes.
+      { "ÜDRG" ´ FnToggleDRG ª }
+      { "ÜRCS" ´ FnToggleRCS ª }
+      { "ÜHDOB" ´ FnToggleHDOB ª }
+      { "ÜRC" ´ FnToggleRC ª }
+      { "Ü=~" ´ FnToggleEA ª }
+    }
+
+    @ Define and display the Custom Menu.
+    MENU
+  ª
+
+  FnShowMenuLinearAlgebra ´
+    @ #NOTE Function: FnShowMenuLinearAlgebra
+
+    @ This function creates a custom menu with various mathematical functions.
+
+    @ Put in the stack the "Custom Menu",
+    @ to be displayed and stored as 'CST' file in Home.
+    {
+      @ Screen 3 - Linear algebra.
+      { "EDIT3" EDITB }
+      { "VIEW" ´ DUP SCROLL ª }
+      DET
+      TRAN
+      INV
+      EGV
+
+      @ Screen 5 - Configuration modes.
+      { "ÜDRG" ´ FnToggleDRG ª }
+      { "ÜRCS" ´ FnToggleRCS ª }
+      { "ÜHDOB" ´ FnToggleHDOB ª }
+      { "ÜRC" ´ FnToggleRC ª }
+      { "Ü=~" ´ FnToggleEA ª }
+    }
+
+    @ Define and display the Custom Menu.
+    MENU
+  ª
+
   FnPurgeHomeFiles ´
     @ #NOTE Function: FnPurgeHomeFiles
     @ This function purges all files in the HOME directory.
@@ -542,7 +619,7 @@ DIR
 
     FnFactoryResetBase
 
-    FnCustomMenu
+    FnShowMenuEquations
   ª
 
   RESET ´
