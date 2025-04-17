@@ -69,6 +69,7 @@ DIR
     FnShowMenuCombinatorics
     FnShowMenuEquations
     FnShowMenuLinearAlgebra
+    FnShowMenuProgram
     MsgBoxExample
   }
 
@@ -364,6 +365,7 @@ DIR
       { "1.Equations menu" 1. }
       { "2.Linear Algebra menu" 2. }
       { "3.Combinatorics menu" 3. }
+      { "4.Program menu" 3. }
     }
     1
     CHOOSE
@@ -373,25 +375,26 @@ DIR
 
     CASE
       DUP 1. == THEN DROP FnShowMenuEquations END
-      2. == THEN FnShowMenuLinearAlgebra END
-        FnShowMenuCombinatorics
+      DUP 2. == THEN DROP FnShowMenuLinearAlgebra END
+      3. == THEN FnShowMenuCombinatorics END
+        FnShowMenuProgram
     END
   ª
 
   FnShowMenuCombinatorics ´
     @ #NOTE Function: FnShowMenuCombinatorics
-
-    @ This function creates a custom menu with various mathematical functions.
+    @ This function displays a custom menu with various mathematical functions.
 
     @ Put in the stack the "Custom Menu",
     @ to be displayed and stored as 'CST' file in Home.
     {
-      @ Screen - Combinatorics.
+      @ Options - Part 1.
       { "EDIT" EDITB }
       { "VIEW" ´ DUP SCROLL ª }
       COMB
       PERM
       !
+      @ Options - Part 2.
       { "RMODE" ´ FnResetModes ª }
     }
 
@@ -401,20 +404,19 @@ DIR
 
   FnShowMenuEquations ´
     @ #NOTE Function: FnShowMenuEquations
-    @ This function creates a custom menu with various mathematical functions.
+    @ This function displays a custom menu with various mathematical functions.
 
     @ Put in the stack the "Custom Menu",
     @ to be displayed and stored as 'CST' file in Home.
     {
-      @ Screen - Equations.
+      @ Options - Part 1.
       { "EDIT" EDITB }
       { "VIEW" ´ DUP SCROLL ª }
       PLOT
       FACTOR
       SIMPLIFY
       PARTFRAC
-
-      @ Screen - Equations (solve).
+      @ Options - Part 2.
       ISOL
       SOLVEVX
       FROOTS
@@ -429,21 +431,45 @@ DIR
 
   FnShowMenuLinearAlgebra ´
     @ #NOTE Function: FnShowMenuLinearAlgebra
-    @ This function creates a custom menu with various mathematical functions.
+    @ This function displays a custom menu with various mathematical functions.
 
     @ Put in the stack the "Custom Menu",
     @ to be displayed and stored as 'CST' file in Home.
     {
-      @ Screen - Linear algebra.
+      @ Options - Part 1.
       { "EDIT" EDITB }
       { "VIEW" ´ DUP SCROLL ª }
       DET
       TRAN
       INV
       EGV
-
-      @ Screen - Configuration modes.
+      @ Options - Part 2.
       { "RMODE" ´ FnResetModes ª }
+    }
+
+    @ Define and display the Custom Menu.
+    MENU
+  ª
+
+  FnShowMenuProgram ´
+    @ #NOTE Function: FnShowMenuProgram
+    @ This function displays a custom menu with various programming functions.
+
+    @ Define the menu.
+    {
+      @ Options - Part 1.
+      { "EDIT" EDITB }
+      OBJç
+      çARRY
+      çLIST
+      çSTR
+      SIZE
+      @ Options - Part 2.
+      DUP
+      DROP
+      SWAP
+      GET
+      PUT
     }
 
     @ Define and display the Custom Menu.
