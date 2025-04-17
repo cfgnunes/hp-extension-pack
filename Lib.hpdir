@@ -298,8 +298,8 @@ DIR
       0 =
       1 ARRY
       'irr' 1 ARRY
-      @ Initial guess is 0.15 (15%) for the numerical solver.
-      0.15 1 ARRY
+      @ Initial guess is 0.5 (50%) for the numerical solver.
+      0.5 1 ARRY
       MSLV
 
       @ Restores the flags and current directory
