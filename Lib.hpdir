@@ -365,7 +365,7 @@ DIR
       { "1.Equations menu" 1. }
       { "2.Linear Algebra menu" 2. }
       { "3.Combinatorics menu" 3. }
-      { "4.Program menu" 3. }
+      { "4.Program menu" 4. }
     }
     1
     CHOOSE
