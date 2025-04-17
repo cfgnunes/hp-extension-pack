@@ -1,0 +1,44 @@
+@ This program installs helper functions in port 2 (FLASH).
+@ It is used to build the library from the source code and tests.
+
+@ %NAME%=HELPER
+
+«
+
+  «
+    @ #NOTE Function: LibMk
+    @ It is used to build the library from the source code.
+
+    @ Change the directory to the library folder.
+    HOME
+    MyLib
+
+    @ Create/Build the library.
+    CRLIB
+
+    @ Store it in port 0 (IRAM).
+    0 STO
+  »
+  :2:LibMk STO
+
+  «
+    @ #NOTE Function: LibRm
+    @ This function remove all files and remove the library from Port 0 (IRAM).
+
+    HOME
+
+    @ Purge all directories.
+    15 TVARS
+    PGDIR
+
+    @ Purge all variables.
+    VARS
+    PURGE
+
+    @ Remove the library from port 0 (IRAM).
+    :0:1023
+    PURGE
+  »
+  :2:LibRm STO
+
+»
