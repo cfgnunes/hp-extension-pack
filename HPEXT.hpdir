@@ -486,15 +486,15 @@ DIR
     @ Put in the stack the "Custom Menu",
     @ to be displayed and stored as 'CST' file in Home.
     {
-      @ Screen 4 - Combinatorics.
-      { "EDIT4" EDITB }
+      @ Screen - Combinatorics.
+      { "EDIT" EDITB }
       { "VIEW" ´ DUP SCROLL ª }
       COMB
       PERM
       !
       { }
 
-      @ Screen 5 - Configuration modes.
+      @ Screen - Configuration modes.
       { "ÜDRG" ´ FnToggleDRG ª }
       { "ÜRCS" ´ FnToggleRCS ª }
       { "ÜHDOB" ´ FnToggleHDOB ª }
@@ -514,23 +514,23 @@ DIR
     @ Put in the stack the "Custom Menu",
     @ to be displayed and stored as 'CST' file in Home.
     {
-      @ Screen 1 - Equations.
-      { "EDIT1" EDITB }
+      @ Screen - Equations.
+      { "EDIT" EDITB }
       { "VIEW" ´ DUP SCROLL ª }
       PLOT
       FACTOR
       SIMPLIFY
       PARTFRAC
 
-      @ Screen 2 - Equations (solve).
-      { "EDIT2" EDITB }
+      @ Screen - Equations (solve).
+      { "EDIT" EDITB }
       ISOL
       SOLVEVX
       FROOTS
       RREF
       çQ
 
-      @ Screen 5 - Configuration modes.
+      @ Screen - Configuration modes.
       { "ÜDRG" ´ FnToggleDRG ª }
       { "ÜRCS" ´ FnToggleRCS ª }
       { "ÜHDOB" ´ FnToggleHDOB ª }
@@ -551,15 +551,15 @@ DIR
     @ Put in the stack the "Custom Menu",
     @ to be displayed and stored as 'CST' file in Home.
     {
-      @ Screen 3 - Linear algebra.
-      { "EDIT3" EDITB }
+      @ Screen - Linear algebra.
+      { "EDIT" EDITB }
       { "VIEW" ´ DUP SCROLL ª }
       DET
       TRAN
       INV
       EGV
 
-      @ Screen 5 - Configuration modes.
+      @ Screen - Configuration modes.
       { "ÜDRG" ´ FnToggleDRG ª }
       { "ÜRCS" ´ FnToggleRCS ª }
       { "ÜHDOB" ´ FnToggleHDOB ª }
