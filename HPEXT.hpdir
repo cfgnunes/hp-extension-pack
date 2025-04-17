@@ -453,6 +453,7 @@ DIR
 
   ChooseSystemTools «
     @ #NOTE Function: ChooseSystemTools
+    @ This function displays a menu with "System tools".
 
     ""
     {
@@ -481,6 +482,7 @@ DIR
 
   FnPurgeHomeFiles «
     @ #NOTE Function: FnPurgeHomeFiles
+    @ This function purges all files in the HOME directory.
 
     HOME
 
@@ -495,6 +497,7 @@ DIR
 
   FnFactoryResetBase «
     @ #NOTE Function: FnFactoryResetBase
+    @ This function restores the calculator to its factory settings.
 
     @ Clear the user keys.
     { } STOKEYS
@@ -510,6 +513,7 @@ DIR
 
   FnFactoryReset «
     @ #NOTE Function: FnFactoryReset
+    @ This function restores the calculator to its factory settings.
 
     @ Restore default flags.
     {# 204010FF0h # 0h # 8000000042000000h # 0h} STOF
@@ -525,6 +529,8 @@ DIR
 
   FnFactoryResetRpn «
     @ #NOTE Function: FnFactoryResetRpn
+    @ This function restores the calculator to its factory settings in RPN
+    @ mode.
 
     @ Restore my custom flags.
     @-56 SF Disable Error Beep.
