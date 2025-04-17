@@ -124,11 +124,11 @@ DIR
       SWAP
 
 	    DUP { "" } + SIZE
-      "Shortcut menus" + « ChooseShortcutMenus »
+      "System tools" + « ChooseSystemTools »
       2 LIST 1 LIST +
 
 	    DUP { "" } + SIZE
-      "System tools" + « ChooseSystemTools »
+      "Shortcut menus" + « ChooseShortcutMenus »
       2 LIST 1 LIST +
 
       SWAP
