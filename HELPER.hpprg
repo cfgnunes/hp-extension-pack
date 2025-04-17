@@ -40,6 +40,8 @@
     @ Remove the library from port 0 (IRAM).
     :0:1023
     PURGE
+
+    CLEAR
   »
 
   @ Store the 'LibRm' function in port 2 (FLASH).
