@@ -62,7 +62,7 @@ DIR
     ChooseSystemTools
     FnExtProgram
     FnFactoryReset
-    FnFactoryResetBase
+    FnFactoryResetDefault
     FnFactoryResetRpn
     FnPurgeHomeFiles
     FnResetModes
@@ -350,7 +350,7 @@ DIR
       FnPurgeHomeFiles
     ELSE
       IF 2. == THEN
-        FnFactoryReset
+        FnFactoryResetDefault
       ELSE
         FnFactoryResetRpn
       END
@@ -491,8 +491,8 @@ DIR
     PURGE
   ª
 
-  FnFactoryResetBase ´
-    @ #NOTE Function: FnFactoryResetBase
+  FnFactoryReset ´
+    @ #NOTE Function: FnFactoryReset
     @ This function restores the calculator to its factory settings.
 
     @ Clear the user keys.
@@ -509,8 +509,8 @@ DIR
     FnShowMenuEquations
   ª
 
-  FnFactoryReset ´
-    @ #NOTE Function: FnFactoryReset
+  FnFactoryResetDefault ´
+    @ #NOTE Function: FnFactoryResetDefault
     @ This function restores the calculator to its factory settings.
 
     @ Restore default flags.
@@ -519,7 +519,7 @@ DIR
     @ Set the FONT8 (default).
     FONT8 çFONT
 
-    FnFactoryResetBase
+    FnFactoryReset
   ª
 
   FnFactoryResetRpn ´
@@ -535,7 +535,7 @@ DIR
     @ Set the FONT6.
     FONT6 çFONT
 
-    FnFactoryResetBase
+    FnFactoryReset
   ª
 
   RESET ´
