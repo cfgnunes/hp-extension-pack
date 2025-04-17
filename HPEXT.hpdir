@@ -1,0 +1,534 @@
+@ =============================================================================
+@ Library Name : HP Extension Pack
+@ Author       : Cristiano Fraga G. Nunes
+@ Version      : 0.1
+@ Date         : 16/04/2025
+@ Language     : HP UserRPL (HP 50g, compatible with HP 49g and HP 49g+)
+@ Description  : A custom library providing functions for financial analysis,
+@                convolution operations and a user-friendly custom menu system.
+@ =============================================================================
+
+@ %NAME%=MyLib
+
+@ -----------------------------------------------------------------------------
+@ How to Compile and Test the Library
+@ -----------------------------------------------------------------------------
+@ 1. Enable RPL Mode.
+@ 2. Attach the development library using the command: 256 ATTACH
+@ 3. Place this directory in the calculator.
+@ 4. Change to this new directory.
+@ 5. Create the library using the command: CRLIB
+@ 6. The library will now be on the stack.
+@ 7. Store it in port 0 (IRAM) using: 0 STO
+@
+@ To install the library permanently, store it in port 2 (FLASH).
+
+@ -----------------------------------------------------------------------------
+@ Directory Definition
+@ -----------------------------------------------------------------------------
+@ This is the directory object containing all variables needed to build the
+@ library.
+DIR
+
+  @ ---------------------------------------------------------------------------
+  @ #NOTE Special variables used for CRLIB command for building the library
+  @ ---------------------------------------------------------------------------
+
+  @ The $ROMID variable must contain the library number or your library.
+  @ This number must be in the range 769 to 1791.
+  $ROMID 1023
+
+  $CONFIG 1
+
+  @ The $TITLE variable must contain a character string defining the title of
+  @ the library. This string must be less than 256 characters long. The first
+  @ five characters will be used for the name that is shown in the library
+  @ menu.
+  $TITLE "HPEXT:HP Extension Pack v0.1"
+
+  @ The $VISIBLE variable contains a list of all the variables in the current
+  @ directory that you want to have visible in the library menu.
+  $VISIBLE {
+    RESET
+  }
+
+  @ The $HIDDEN variable contains a list of all the variables in the current
+  @ directory that you want to have invisible in the library. They are
+  @ generally subprograms of your application.
+  $HIDDEN {
+    AppIRR
+    AppNPV
+    ChooseSystemTools
+    ExtensionProgram
+    FnCustomMenu
+    FnFactoryReset
+    FnFactoryResetRpn
+    FnPurgeHomeFiles
+    MsgBoxExample
+  }
+
+  @ The $EXTPRG variable contains the name of the extension program of the
+  @ library. This program must be either a visible or an hidden object of the
+  @ library. This can be used to customize built-in menus with your own
+  @ functions, as if they were part of the system. The calculator does not
+  @ provide every possible function in every area, but they let you customize
+  @ the built in menu in order to add your functions as if they were built in.
+  $EXTPRG 'ExtensionProgram'
+
+  @ ---------------------------------------------------------------------------
+  @ #NOTE Files of the library
+  @ ---------------------------------------------------------------------------
+
+  ExtensionProgram ´
+    @ #NOTE Function: ExtensionProgram
+    @ This is the Extension Program of the library.
+
+    @ The Extension Program is executed automatically
+    @ each time a system menu (e.g., statistics, finance) is displayed.
+    @
+    @ Example:
+    @ When you call the "APPS menu", the calculator put on the stack the list
+    @ of this menu:
+    @ {
+    @   { "1. Plot functions..." ´ Action ª }
+    @   { "2. I/O functions..." ´ Action ª }
+    @    ...
+    @ } 0
+    @ The last number 0 is the "message number".
+    @
+    @ Each "message number" has a specific meaning as described below:
+    @ 0 APPS menu
+    @ 1 Main Statistics menu
+    @ 2 Hypothesis statistics menu
+    @ 3 Confidence interval statistics menu
+    @ 4 Finance menu
+    @ 5 Numeric solver menu
+    @ 6 Time menu
+
+    @ These commented commands bellow dump the stack to help debug.
+    @DUP
+    @'ExNum' STO
+    @SWAP
+    @DUP
+    @'ExLst' STO
+    @SWAP
+    @KILL
+
+    @ Add a new menu entry if the "APPS menu" is active (msg = 0).
+    IF DUP 0 R~SB == THEN
+      SWAP
+	    DUP { "" } + SIZE
+      "System tools" + ´ ChooseSystemTools ª
+      2 çLIST 1 çLIST +
+      SWAP
+    END
+
+    @ Add a new menu entry if the "Main Statistics menu" is active (msg = 1).
+    IF DUP 1 R~SB == THEN
+      SWAP
+	    DUP { "" } + SIZE
+      "New entry" + ´ MsgBoxExample ª
+      2 çLIST 1 çLIST +
+      SWAP
+    END
+
+    @ Add Finance functions if "Finance menu" is active (msg = 4).
+    IF DUP 4 R~SB == THEN
+      ""
+      {
+        { "1.Time Value of Money" 0.0 }
+        { "2.Net Present Value" ´ AppNPV ª }
+        { "3.Int. Rate of Return" ´ AppIRR ª }
+      }
+      1
+      CHOOSE
+
+      IF THEN
+        DUP TYPE
+        IF 0 == THEN
+          @ If option 1 is selected 1.Time Value of Money", clear temp data on
+          @ the stack and continue.
+          DROP
+        ELSE
+          @ Otherwise, evaluate the selected program.
+          3 ROLLD 2 DROPN
+          EVAL
+          KILL
+        END
+      ELSE
+        @ If user cancels the CHOOSE box, just clean up.
+        2 DROPN
+        KILL
+      END
+    END
+  ª
+
+  MsgBoxExample ´
+    @ #NOTE Function: MsgBoxExample
+    @ This is an example of a custom application.
+
+    "Example of APP..." MSGBOX
+  ª
+
+  AppNPV ´
+    @ #NOTE Function: AppNPV
+    @ This function computes the Net Present Value (NPV) of a cash flow series.
+
+    @ INFORM Section (Begin) --------------------------------------------------
+    @ INFORM 'Title'.
+    "NET PRESENT VALUE (NPV)"
+    @ INFORM 'Field definitions'.
+    {
+      { "C:" "Enter cash flow" 3 }
+      { "r:" "Enter interest rate (%)" 0 }
+    }
+    @ INFORM 'Format' (col, tabs).
+    { }
+    @ INFORM 'Default values'.
+    { }
+    @ INFORM 'Initial values'.
+    'C' VTYPE IF 29 == THEN C ELSE [ -500 50 75 100 150 250 ] END
+    'r' VTYPE IF 0 == THEN r ELSE 5 END
+    2
+    çLIST
+    INFORM
+    @ INFORM Section (End) ----------------------------------------------------
+
+    @ Exit if the user presses "Cancel".
+    NOT IF THEN
+      KILL
+    END
+
+    @ Store inputs in variables to allow re-use and editing by the user.
+    OBJç DROP
+    2 DUPN
+    'r' STO
+    'C' STO
+
+    @ Convert percentage rate to decimal
+    100 /
+
+    @ Compute the NPV.
+    ç C r
+    ´
+      @ Initialize the accumulator in the stack.
+      0
+
+      @ Loop: for t = 1 to 'C.size'.
+      1
+      C SIZE OBJç DROP
+      FOR t
+        C t GET    @ Get value of C[t].
+        1 r +      @ Compute (1+r).
+        t 1 - ^ /  @ Compute C[t] / (1+r)^(t-1).
+        +          @ Add to the accumulator.
+      NEXT
+
+      çNUM
+      "NPV" çTAG
+    ª
+  ª
+
+  AppIRR ´
+    @ #NOTE Function: AppIRR
+    @ This function computes the Internal Rate of Return (IRR) of a cash flow.
+
+    @ INFORM Section (Begin) --------------------------------------------------
+    @ INFORM 'Title'.
+    "INTERNAL RATE OF RETURN (IRR)"
+    @ INFORM 'Field definitions'.
+    {
+      { "C:" "Enter cash flow" 3 }
+    }
+    @ INFORM 'Format' (col, tabs).
+    { }
+    @ INFORM 'Default values'.
+    { }
+    @ INFORM 'Initial values'.
+    'C' VTYPE IF 29 == THEN C ELSE [ -500 50 75 100 150 250 ] END
+    1
+    çLIST
+    INFORM
+    @ INFORM Section (End) ----------------------------------------------------
+
+    @ Exit if the user presses "Cancel".
+    NOT IF THEN
+      KILL
+    END
+
+    @ Store inputs in variables to allow re-use and editing by the user.
+    OBJç DROP
+    DUP
+    'C' STO
+
+    @ Compute the IRR.
+    ç C
+    ´
+      @ Purge 'irr' in case it already exists, to allow symbolic computation.
+      'irr' PURGE
+
+      @ Saves the current status of the flags, and the current directory path.
+      PUSH
+
+      @ Enable approximate mode.
+      -105 SF
+
+      @ Initialize the accumulator in the stack.
+      0
+
+      @ Loop: for t = 1 to 'C.size'.
+      1
+      C SIZE OBJç DROP
+      FOR t
+        C t GET    @ Get value of C[t].
+        1 'irr' +  @ Compute (1+r).
+        t 1 - ^ /  @ Compute C[t] / (1+r)^(t-1).
+        +          @ Add to the accumulator.
+      NEXT
+
+      @ Solve the equation where NPV = 0.
+      0 =
+      1 çARRY
+      'irr' 1 çARRY
+      @ Initial guess is 0.15 (15%) for the numerical solver.
+      0.15 1 çARRY
+      MSLV
+
+      @ Restores the flags and current directory
+      POP
+
+      3 ROLLD 2 DROPN
+      OBJç DROP
+
+      @ Convert the result to percentage.
+      100 *
+
+      çNUM
+      "IRR" çTAG
+    ª
+    101.2 KEYEVAL
+  ª
+
+  FnCustomMenu ´
+    @ #NOTE Function: FnCustomMenu
+    @ This function creates a custom menu with various mathematical functions.
+
+    @ Put in the stack the "Custom Menu",
+    @ to be displayed and stored as 'CST' file in Home.
+    {
+      @ Screen 1 - Equations.
+      { "EDIT1" EDITB }
+      { "VIEW" ´ DUP SCROLL ª }
+      FACTOR
+      SIMPLIFY
+      PARTFRAC
+      çQ
+
+      @ Screen 2 - Equations (solve).
+      { "EDIT2" EDITB }
+      { "VIEW" ´ DUP SCROLL ª }
+      ISOL
+      SOLVEVX
+      FROOTS
+      RREF
+
+      @ Screen 3 - Linear algebra.
+      { "EDIT3" EDITB }
+      { "VIEW" ´ DUP SCROLL ª }
+      DET
+      TRAN
+      INV
+      EGV
+
+      @ Screen 4 - Combinatorics.
+      { "EDIT4" EDITB }
+      { "VIEW" ´ DUP SCROLL ª }
+      COMB
+      PERM
+      !
+      { }
+
+      @ Screen 5 - Configuration modes.
+      {
+        @ Toggle between:
+        @ Degree -> Radians -> Grads modes.
+        "ÜDRG"
+        ´
+          @ Is "Radians" mode?
+          IF -17 FS? THEN
+            GRAD
+          ELSE
+            @ Is "Grads" mode?
+            IF -18 FS? THEN
+              DEG
+            ELSE
+              RAD
+            END
+          END
+        ª
+      }
+      {
+        @ Toggle between:
+        @ Rectangular -> Polar/Cylindrical -> Polar/Spherical modes.
+        "ÜRCS"
+        ´
+          @ Is "Rectangular" mode?
+          IF -16 FC? THEN
+            CYLIN
+          ELSE
+            IF -15 FC? THEN
+              SPHERE
+            ELSE
+              RECT
+            END
+          END
+        ª
+      }
+      {
+        @ Toggle between:
+        @ HEX -> DEC -> OCT -> BIN modes.
+        "ÜHDOB"
+        ´
+          @ Is "HEX" mode?
+          IF -11 FS? -12 FS? AND THEN
+            DEC
+          ELSE
+            @ Is "DEC" mode?
+            IF -11 FC? -12 FC? AND THEN
+              OCT
+            ELSE
+              @ Is "OCT" mode?
+              IF -11 FS? -12 FC? AND THEN
+                BIN
+              ELSE
+                HEX
+              END
+            END
+          END
+        ª
+      }
+      {
+        @ Toggle between:
+        @ Real -> Complex modes.
+        "ÜRC"
+        ´
+          @ Is "Real" mode?
+          IF -103 FC? THEN
+            @ Set "Complex" mode.
+            -103 SF
+          ELSE
+            @ Set "Real" mode.
+            -103 CF
+          END
+        ª
+      }
+      {
+        @ Toggle between:
+        @ Exact -> Approximate modes.
+        "Ü=~"
+        ´
+          @ Is "Exact" mode?
+          IF -105 FC? THEN
+            @ Set "Exact" mode.
+            -105 SF
+          ELSE
+            @ Set "Approximate" mode.
+            -105 CF
+          END
+        ª
+      }
+    }
+
+    @ Define and display the Custom Menu.
+    MENU
+  ª
+
+  ChooseSystemTools ´
+    @ #NOTE Function: ChooseSystemTools
+
+    ""
+    {
+      { "1.Purge all HOME files" 1. }
+      { "2.Ractory reset" 2. }
+      { "3.Ractory reset (RPN)" 3. }
+    }
+    1
+    CHOOSE
+
+    NOT IF THEN
+      KILL
+    END
+
+    IF DUP 1. == THEN
+      DROP
+      FnPurgeHomeFiles
+    ELSE
+      IF 2. == THEN
+        FnFactoryReset
+      ELSE
+        FnFactoryResetRpn
+      END
+    END
+  ª
+
+  FnPurgeHomeFiles ´
+    @ #NOTE Function: FnPurgeHomeFiles
+
+    HOME
+
+    @ Purge all directories.
+    15 TVARS
+    PGDIR
+
+    @ Purge all variables.
+    VARS
+    PURGE
+  ª
+
+  FnFactoryReset ´
+    @ #NOTE Function: FnFactoryReset
+
+    @ Restore default flags.
+    {# 204010FF0h # 0h # 8000000042000000h # 0h} STOF
+
+    @ Set the FONT8 (default).
+    FONT8 çFONT
+
+    FnPurgeHomeFiles
+
+    @ Restore CAS variables from the "CASDIR".
+    CASCFG
+
+    @ Clear the stack.
+    CLEAR
+  ª
+
+  FnFactoryResetRpn ´
+    @ #NOTE Function: FnFactoryResetRpn
+
+    @ Restore my custom flags.
+    @-56 SF Disable Error Beep.
+    @-95 CF Set RPN mode.
+    {# 80000204010FF0h # 0h # 8000000002000000h # 0h} STOF
+
+    @ Set the FONT6.
+    FONT6 çFONT
+
+    FnPurgeHomeFiles
+
+    @ Restore CAS variables from the "CASDIR".
+    CASCFG
+
+    @ Clear the stack.
+    CLEAR
+
+    FnCustomMenu
+  ª
+
+  RESET ´
+    @ #NOTE Visible Function: RESET
+
+    FnFactoryResetRpn
+  ª
+
+END
