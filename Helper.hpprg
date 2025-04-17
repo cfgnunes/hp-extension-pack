@@ -30,17 +30,13 @@
 
   «
     @ #NOTE Function: LibRm
-    @ This function remove all files and remove the library from Port 0 (IRAM).
+    @ This function remove temporary files and the library from Port 0 (IRAM).
 
     HOME
 
-    @ Purge all directories.
-    15 TVARS
+    @ Purge 'MyLib' directory.
+    'MyLib'
     PGDIR
-
-    @ Purge all variables.
-    VARS
-    PURGE
 
     @ Remove the library from port 0 (IRAM).
     :0:1023
