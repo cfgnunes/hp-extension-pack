@@ -16,9 +16,11 @@
     @ Create/Build the library.
     CRLIB
 
-    @ Store it in port 0 (IRAM).
+    @ Store the library in port 0 (IRAM).
     0 STO
   »
+
+  @ Store the 'LibMk' function in port 2 (FLASH).
   :2:LibMk STO
 
   «
@@ -39,6 +41,8 @@
     :0:1023
     PURGE
   »
+
+  @ Store the 'LibRm' function in port 2 (FLASH).
   :2:LibRm STO
 
 »
